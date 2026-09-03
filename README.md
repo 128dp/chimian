@@ -40,7 +40,44 @@ A Python application to extract key metrics from plastic material datasheets (PD
    pip install -r requirements.txt
    ```
 
+### Running with Docker (no local Python setup needed)
+
+If you have [Docker](https://www.docker.com/) installed, you can build and run
+the Streamlit web app in a container without installing Python or any
+dependencies locally:
+
+```bash
+# Build and start with Docker Compose (recommended)
+docker compose up --build
+```
+
+Or without Compose:
+
+```bash
+docker build -t chimian .
+docker run -p 8501:8501 -v "${PWD}/output:/data" chimian
+```
+
+Then open [http://localhost:8501](http://localhost:8501) in your browser.
+Generated Excel files can always be retrieved via the in-app **Download**
+button; the `-v ./output:/data` volume mount also saves a copy to an
+`output/` folder next to the project on your host machine.
+
 ## Usage
+
+### Via Web App (Streamlit)
+
+1. **Run the application**:
+   ```bash
+   streamlit run streamlit_app.py
+   ```
+   (or use Docker as described above - both run the same app)
+
+2. Open the URL shown in the terminal (defaults to
+   [http://localhost:8501](http://localhost:8501)), upload one or more PDF
+   datasheets, choose an output location, and click **Extract & Generate
+   Excel**.
+
 
 ### Via GUI (Recommended)
 

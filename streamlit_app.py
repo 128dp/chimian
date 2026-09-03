@@ -352,7 +352,10 @@ Mass: tonnes
     with col2:
         output_dir = st.text_input(
             "Output directory",
-            value=str(Path.home() / "Downloads"),
+            # CHIMIAN_OUTPUT_DIR lets a Docker deployment point this at a
+            # mounted volume (e.g. /data) by default; falls back to the
+            # user's Downloads folder for local/desktop use.
+            value=os.environ.get('CHIMIAN_OUTPUT_DIR', str(Path.home() / "Downloads")),
             help="Where to save the Excel file"
         )
     
@@ -444,7 +447,15 @@ Mass: tonnes
                 
                 with col3:
                     if st.button("📂 Open Folder", use_container_width=True):
-                        os.startfile(str(Path(st.session_state.output_path).parent))
+                        if hasattr(os, 'startfile'):
+                            os.startfile(str(Path(st.session_state.output_path).parent))
+                        else:
+                            # os.startfile is Windows-only (e.g. not available
+                            # when running in a Linux Docker container) - the
+                            # download button above is the reliable way to
+                            # retrieve the file in that case.
+                            st.info("Opening a folder isn't supported on this "
+                                    "server - use the Download button instead.")
                 
                 # Show path
                 st.code(st.session_state.output_path, language="text")

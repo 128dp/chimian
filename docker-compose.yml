@@ -1,0 +1,8 @@
+services:
+  chimian:
+    build: .
+    ports:
+      - "8501:8501"
+    volumes:
+      - ./output:/data
+    restart: unless-stopped
