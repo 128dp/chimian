@@ -12,14 +12,14 @@ A Python application to extract key metrics from plastic material datasheets (PD
   - Flexural Modulus
   - Elongation
 
-- **Unit Standardization**: Automatically converts various units to standard formats:
-  - Stress values → MPa
-  - Density → g/cm³
-  - Elongation → strain (dimensionless)
-  - Length → mm
-  - Mass → tonnes
-  - Time → seconds
-  - Force → Newton
+- **Unit Standardization**: Automatically converts the extracted metrics to standard units:
+  - Tensile Strength, Flexural Strength, Tensile Modulus, Flexural Modulus → **MPa**
+  - Density → **tonnes/mm³** (converted from g/cm³, kg/m³, specific gravity, etc.)
+  - Elongation → **strain** (dimensionless, converted from %)
+  
+  A few additional general-purpose converters exist (Length → mm, Mass → tonnes,
+  Time → seconds, Force → Newton) for future use but aren't applied to the 6
+  tracked metrics above.
 
 - **Organized Output**: 
   - Creates separate Excel tabs for each material type
@@ -91,17 +91,19 @@ Currently tested with:
 
 ## Output Format
 
-The generated Excel file contains:
+Each material gets its own Excel sheet, grouped by manufacturer/company. Every
+metric row contains both the as-listed datasheet value and the standardized
+(converted) value side by side:
 
 | Column | Description |
 |--------|-------------|
-| Company | Manufacturer name |
-| Metric | Property name (Tensile Strength, etc.) |
-| Original Value | Value as listed in datasheet |
-| Original Unit | Unit as listed in datasheet |
-| Test Method | Testing standard (ASTM, UL, etc.) |
-| Standardized Value | Converted to standard unit |
-| Standardized Unit | Standard unit (MPa, g/cm³, etc.) |
+| PROPERTY | Metric name (Tensile Strength, Density, etc.) |
+| TEST METHOD | Testing standard (ASTM D638, ISO 527, etc.) |
+| TEST CONDITION | Test condition as listed (speed, span, temperature, etc.) |
+| UNIT (FILE) | Unit exactly as listed in the datasheet |
+| VALUE (FILE) | Value exactly as listed in the datasheet |
+| UNIT (CONVERTED) | Standardized unit (see Unit Conversion Reference below) |
+| VALUE (CONVERTED) | Value converted to the standardized unit |
 
 ## Project Structure
 
@@ -127,27 +129,35 @@ c:\chimian\
 
 ## Unit Conversion Reference
 
-### Stress/Modulus Conversions
-- MPa (standard)
+The standardized unit is always shown in the UNIT (CONVERTED) column; the
+original datasheet unit/value are preserved unchanged in UNIT (FILE) / VALUE (FILE).
+
+### Tensile/Flexural Strength & Tensile/Flexural Modulus → MPa
+- MPa (already standard, passed through)
 - PSI → MPa
-- kg/cm² → MPa
-- kPa → MPa
-- GPa → MPa
+- kPa, GPa, Pa → MPa
+- kg/cm², kgf/cm², kg·cm⁻² → MPa
+- N/mm² (equivalent to MPa)
 
-### Density Conversions
-- g/cm³ (standard)
-- kg/m³ → g/cm³
-- Specific gravity → g/cm³
+### Density → tonnes/mm³
+- g/cm³ → tonnes/mm³ (× 1e-9)
+- kg/m³ → tonnes/mm³ (× 1e-12)
+- tonnes/m³, tonnes/cm³ → tonnes/mm³
+- Specific gravity (unitless) → tonnes/mm³ (assumes water = 1 g/cm³)
 
-### Elongation Conversions
-- Strain (dimensionless, standard)
-- Percentage (%) → strain
+Note: the converted density values are intentionally expressed in
+tonnes/mm³ (not the more common g/cm³) - this is very small in magnitude
+(e.g. 1.06 g/cm³ → ~1.06e-9 tonnes/mm³), which is expected.
 
-### Other Conversions
-- Length: All values → mm
-- Time: All values → seconds
-- Mass: All values → tonnes
-- Force: All values → Newton
+### Elongation → strain (dimensionless)
+- Percentage (%) → strain (divide by 100)
+- Already unitless/strain values are passed through
+
+### General-purpose converters (not currently applied to the 6 tracked metrics)
+- Length: mm, cm, m, inch, µm → mm
+- Time: s, min, hr, day → seconds
+- Mass: kg, g, mg, lb, oz → tonnes
+- Force: N, kN, kgf, lbf → Newton
 
 ## Limitations
 

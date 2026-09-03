@@ -268,7 +268,7 @@ def main():
                 metrics = [
                     "✓ Tensile Strength (MPa)",
                     "✓ Flexural Strength (MPa)",
-                    "✓ Density (g/cm³)",
+                    "✓ Density (tonnes/mm³)",
                     "✓ Tensile Modulus (MPa)",
                     "✓ Flexural Modulus (MPa)",
                     "✓ Elongation (strain)"
