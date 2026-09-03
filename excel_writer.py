@@ -199,7 +199,7 @@ class ExcelWriter:
             current_row += 1
             
             # Metric header row
-            headers = ['PROPERTY', 'TEST METHOD', 'TEST CONDITION', 'UNIT (FILE)', 'VALUE (FILE)', 'UNIT (SI)', 'VALUE (SI)']
+            headers = ['PROPERTY', 'TEST METHOD', 'TEST CONDITION', 'UNIT (FILE)', 'VALUE (FILE)', 'UNIT (CONVERTED)', 'VALUE (CONVERTED)']
             for col_num, header in enumerate(headers, 1):
                 cell = ws.cell(row=current_row, column=col_num)
                 cell.value = header
@@ -253,8 +253,8 @@ class ExcelWriter:
         ws.column_dimensions['C'].width = 30  # Test Condition
         ws.column_dimensions['D'].width = 14  # Unit (file)
         ws.column_dimensions['E'].width = 16  # Value (file)
-        ws.column_dimensions['F'].width = 16  # Unit (SI)
-        ws.column_dimensions['G'].width = 18  # Value (SI)
+        ws.column_dimensions['F'].width = 16  # Unit (Converted)
+        ws.column_dimensions['G'].width = 18  # Value (Converted)
     
     def save(self):
         """Save the workbook"""
