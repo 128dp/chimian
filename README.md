@@ -29,73 +29,39 @@ A Python application to extract key metrics from plastic material datasheets (PD
 
 - **Simple GUI**: User-friendly interface for selecting files and generating reports
 
-## Installation
+## Getting Started
 
-1. **Clone or download this project**
-
-2. **Install Python 3.8 or higher**
-
-3. **Install required dependencies**:
-   ```bash
-   pip install -r requirements.txt
-   ```
-
-### Running with Docker (no Python setup needed)
+### Option 1: Docker (recommended, no Python setup needed)
 
 1. Install [Docker Desktop](https://www.docker.com/products/docker-desktop/) and let it fully start.
 2. Download this project (green **Code → Download ZIP** button on GitHub) and extract it.
 3. Double-click `start-app.bat` - it builds the app and opens it in your browser automatically.
 4. Double-click `stop-app.bat` when you're done.
 
-## Usage
+### Option 2: Run locally with Python
 
-### Via Web App (Streamlit)
-
-1. **Run the application**:
+1. Install Python 3.8 or higher.
+2. Install dependencies:
+   ```bash
+   pip install -r requirements.txt
+   ```
+3. Start the app:
    ```bash
    streamlit run streamlit_app.py
    ```
-   (or use Docker as described above - both run the same app)
-
-2. Open the URL shown in the terminal (defaults to
+4. Open the URL shown in the terminal (defaults to
    [http://localhost:8501](http://localhost:8501)), upload one or more PDF
    datasheets, choose an output location, and click **Extract & Generate
    Excel**.
 
+### Other ways to run it
 
-### Via GUI (Recommended)
-
-1. **Run the application**:
-   ```bash
-   python main.py
-   ```
-
-2. **In the GUI window**:
-   - Click "Select PDF Files" and choose one or more plastic material datasheets
-   - Click "Choose Output Path" and select where to save the Excel file
-   - Click "Extract & Generate Excel"
-
-3. **View Results**:
-   - The Excel file will open with tabs for each material type
-   - Each tab contains data from all manufacturers for that material
-   - Compare metrics across different suppliers
-
-### Via Command Line
-
-```python
-from advanced_extractor import AdvancedPDFExtractor, MetricWithConversion
-from excel_writer import DataOrganizer
-from unit_converter import UnitConverter
-
-# Extract data
-extractor = AdvancedPDFExtractor("your_file.pdf")
-result = extractor.extract_all()
-
-# Generate Excel
-organizer = DataOrganizer()
-organizer.add_extraction_result(result)
-organizer.generate_excel("output.xlsx", UnitConverter())
-```
+- **Desktop GUI**: `python main.py` opens a Tkinter window with the same
+  select-files → choose output → extract workflow.
+- **Programmatic use**: see [advanced_extractor.py](advanced_extractor.py),
+  [excel_writer.py](excel_writer.py), and [unit_converter.py](unit_converter.py)
+  for the underlying `AdvancedPDFExtractor` / `DataOrganizer` / `UnitConverter`
+  classes if you want to call the extraction/export logic from your own script.
 
 ## Supported PDF Formats
 
