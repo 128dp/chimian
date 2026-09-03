@@ -40,51 +40,12 @@ A Python application to extract key metrics from plastic material datasheets (PD
    pip install -r requirements.txt
    ```
 
-### Running with Docker (no local Python setup needed)
+### Running with Docker (no Python setup needed)
 
-If you have [Docker](https://www.docker.com/) installed, you can build and run
-the Streamlit web app in a container without installing Python or any
-dependencies locally.
-
-**Easiest way (Windows, no command line needed):** double-click
-[`start-app.bat`](start-app.bat) - it builds/starts the app with Docker
-Compose and opens it in your browser automatically. Double-click
-[`stop-app.bat`](stop-app.bat) when you're done. This still requires
-[Docker Desktop](https://www.docker.com/products/docker-desktop/) to be
-installed and running first.
-
-Or from the command line:
-
-```bash
-# Build and start with Docker Compose (recommended)
-docker compose up --build
-```
-
-Or without Compose:
-
-```bash
-docker build -t chimian .
-docker run -p 8501:8501 -v "${PWD}/output:/data" chimian
-```
-
-Then open [http://localhost:8501](http://localhost:8501) in your browser.
-Generated Excel files can always be retrieved via the in-app **Download**
-button; the `-v ./output:/data` volume mount also saves a copy to an
-`output/` folder next to the project on your host machine.
-
-### Sharing the app with a non-technical friend
-
-**Before sharing, test it yourself:**
-1. Install [Docker Desktop](https://www.docker.com/products/docker-desktop/) and let it fully start (whale icon in the system tray).
-2. Double-click `start-app.bat` in the project folder - it builds the image and opens the app in your browser.
-3. Upload a sample PDF and generate an Excel file to confirm everything works.
-4. Double-click `stop-app.bat` when finished.
-
-**Then send it to your friend:**
-1. Have them go to this project's GitHub page and click **Code → Download ZIP**, then extract it anywhere.
-2. Have them install [Docker Desktop](https://www.docker.com/products/docker-desktop/) (one-time).
-3. Have them double-click `start-app.bat` - no command line or VS Code needed. It opens automatically in their browser.
-4. Have them double-click `stop-app.bat` when they're done.
+1. Install [Docker Desktop](https://www.docker.com/products/docker-desktop/) and let it fully start.
+2. Download this project (green **Code → Download ZIP** button on GitHub) and extract it.
+3. Double-click `start-app.bat` - it builds the app and opens it in your browser automatically.
+4. Double-click `stop-app.bat` when you're done.
 
 ## Usage
 
