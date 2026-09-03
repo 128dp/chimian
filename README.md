@@ -72,6 +72,20 @@ Generated Excel files can always be retrieved via the in-app **Download**
 button; the `-v ./output:/data` volume mount also saves a copy to an
 `output/` folder next to the project on your host machine.
 
+### Sharing the app with a non-technical friend
+
+**Before sharing, test it yourself:**
+1. Install [Docker Desktop](https://www.docker.com/products/docker-desktop/) and let it fully start (whale icon in the system tray).
+2. Double-click `start-app.bat` in the project folder - it builds the image and opens the app in your browser.
+3. Upload a sample PDF and generate an Excel file to confirm everything works.
+4. Double-click `stop-app.bat` when finished.
+
+**Then send it to your friend:**
+1. Have them go to this project's GitHub page and click **Code → Download ZIP**, then extract it anywhere.
+2. Have them install [Docker Desktop](https://www.docker.com/products/docker-desktop/) (one-time).
+3. Have them double-click `start-app.bat` - no command line or VS Code needed. It opens automatically in their browser.
+4. Have them double-click `stop-app.bat` when they're done.
+
 ## Usage
 
 ### Via Web App (Streamlit)
