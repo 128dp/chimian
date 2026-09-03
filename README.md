@@ -44,7 +44,16 @@ A Python application to extract key metrics from plastic material datasheets (PD
 
 If you have [Docker](https://www.docker.com/) installed, you can build and run
 the Streamlit web app in a container without installing Python or any
-dependencies locally:
+dependencies locally.
+
+**Easiest way (Windows, no command line needed):** double-click
+[`start-app.bat`](start-app.bat) - it builds/starts the app with Docker
+Compose and opens it in your browser automatically. Double-click
+[`stop-app.bat`](stop-app.bat) when you're done. This still requires
+[Docker Desktop](https://www.docker.com/products/docker-desktop/) to be
+installed and running first.
+
+Or from the command line:
 
 ```bash
 # Build and start with Docker Compose (recommended)
