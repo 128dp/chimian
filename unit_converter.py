@@ -128,8 +128,12 @@ class UnitConverter:
         - tonnes/cm³ to tonnes/mm³: multiply by 1e-9
         - Specific gravity (unitless) to tonnes/mm³: multiply by 1e-9 (assuming density of water = 1 g/cm³)
         """
-        if value is None or from_unit is None:
+        if value is None:
             return None, None
+
+        # Density values without units are assumed to be in g/cm³.
+        if not from_unit:
+            from_unit = 'g/cm³'
         
         normalized = UnitConverter.normalize_unit(from_unit)
         

@@ -278,7 +278,10 @@ class EnhancedPDFExtractor:
         
         last_metric = None
         last_test_method = None
+        last_test_condition = None
         last_unit = None
+        last_flexural_metric = None
+        last_flexural_method = None
         added_any = False
         
         for row in rows:
@@ -309,7 +312,12 @@ class EnhancedPDFExtractor:
             unit_cell = cell_at(row, unit_col)
             if unit_cell:
                 last_unit = unit_cell
-            unit = unit_cell or last_unit or extracted_unit
+            # Density/Specific Gravity rows often have no unit column. Do
+            # not inherit a unit from the preceding strength row.
+            if metric_type == 'density':
+                unit = unit_cell or extracted_unit
+            else:
+                unit = unit_cell or last_unit or extracted_unit
             
             test_method_cell = cell_at(row, test_method_col)
             if test_method_cell:
@@ -319,10 +327,29 @@ class EnhancedPDFExtractor:
             test_method = last_test_method
             
             test_condition_cell = cell_at(row, test_condition_col)
-            test_condition = (
-                re.sub(r'\s+', ' ', test_condition_cell.replace('\n', ' ')).strip()
-                if test_condition_cell else None
-            )
+            if test_condition_cell:
+                last_test_condition = re.sub(
+                    r'\s+', ' ', test_condition_cell.replace('\n', ' ')
+                ).strip()
+            test_condition = last_test_condition
+
+            if metric_type not in ('flexural_strength', 'flexural_modulus'):
+                last_flexural_metric = None
+                last_flexural_method = None
+            elif (
+                last_flexural_metric and last_flexural_metric != metric_type
+                and last_flexural_method == test_method
+                and test_condition
+            ):
+                previous_entries = self.data.get(last_flexural_metric, [])
+                if previous_entries:
+                    previous_condition = previous_entries[-1].get('test_condition')
+                    conditions = [previous_condition, test_condition]
+                    combined_condition = '; '.join(
+                        dict.fromkeys(condition for condition in conditions if condition)
+                    )
+                    previous_entries[-1]['test_condition'] = combined_condition
+                    test_condition = combined_condition
             
             if self._add_entry(metric_type, {
                 'value': value,
@@ -332,6 +359,10 @@ class EnhancedPDFExtractor:
                 'raw_value': raw_value_cell
             }):
                 added_any = True
+
+            if metric_type in ('flexural_strength', 'flexural_modulus'):
+                last_flexural_metric = metric_type
+                last_flexural_method = test_method
         
         return added_any
     
@@ -561,9 +592,15 @@ class EnhancedPDFExtractor:
                 except (TypeError, ValueError):
                     continue
                 
+                unit = entry.get('unit')
+                if metric_key == 'density' and (
+                    not unit or UnitConverter.normalize_unit(unit) in ('%', 'percent')
+                ):
+                    unit = 'g/cm3'
+
                 valid_entries.append({
                     'value': value,
-                    'unit': entry.get('unit'),
+                    'unit': unit,
                     'test_method': entry.get('test_method'),
                     'test_condition': entry.get('test_condition'),
                     'raw_value': entry.get('raw_value'),
