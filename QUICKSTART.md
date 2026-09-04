@@ -28,6 +28,10 @@ Double-click `run.bat`
 python main.py
 ```
 
+### Option 3: Build a Windows EXE
+Run `build_exe.bat`. The packaged application will be created at
+`dist\Chimian\Chimian.exe` and can be copied to another Windows computer.
+
 ## Using the Application
 
 ### Step 1: Select PDF Files
