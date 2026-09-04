@@ -280,7 +280,7 @@ def main():
         st.subheader("Unit Settings")
         st.write("Standard units configured:")
         st.code("""
-Stress (Tensile/Flexural Strength, Moduli): MPa
+Tensile Strength / Modulus & Flexural Strength / Modulus : MPa
 Density: tonnes/mm³
 Elongation: strain (dimensionless)
 Length: mm
